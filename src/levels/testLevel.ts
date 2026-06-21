@@ -1,7 +1,7 @@
 import type { LevelData } from '../engine/types';
 import { Skill } from '../engine/types';
 
-/** A throwaway level used for early visual/physics validation. */
+/** A small, genuinely playable demo/validation level. */
 export const TEST_LEVEL: LevelData = {
   name: 'Test Chamber',
   rating: 'Dev',
@@ -9,21 +9,21 @@ export const TEST_LEVEL: LevelData = {
   height: 160,
   bg: '#101830',
   shapes: [
-    // ground floor
-    { kind: 'rect', x: 0, y: 140, w: 640, h: 20, style: 'dirt' },
-    // a couple of platforms
-    { kind: 'rect', x: 120, y: 100, w: 80, h: 8, style: 'rock' },
-    { kind: 'rect', x: 260, y: 80, w: 100, h: 60, style: 'brick' },
-    { kind: 'rect', x: 420, y: 60, w: 16, h: 80, style: 'marble' },
-    // steel block
-    { kind: 'rect', x: 500, y: 100, w: 40, h: 40, style: 'steel', steel: true },
-    // a pit carved out of the ground
-    { kind: 'rect', x: 200, y: 140, w: 30, h: 20, style: 'dirt', erase: true },
+    // main ground
+    { kind: 'rect', x: 0, y: 120, w: 640, h: 40, style: 'dirt' },
+    // a raised starting ledge under the hatch (short, safe drop)
+    { kind: 'rect', x: 30, y: 96, w: 120, h: 6, style: 'rock' },
+    // a wall to bash/build over
+    { kind: 'rect', x: 300, y: 70, w: 16, h: 50, style: 'brick' },
+    // a steel block (indestructible)
+    { kind: 'rect', x: 420, y: 100, w: 40, h: 20, style: 'steel', steel: true },
+    // a pit of water in the ground
+    { kind: 'rect', x: 200, y: 120, w: 40, h: 40, style: 'dirt', erase: true },
   ],
   objects: [
-    { type: 'entrance', x: 40, y: 20 },
-    { type: 'exit', x: 590, y: 124 },
-    { type: 'water', x: 200, y: 150 },
+    { type: 'entrance', x: 70, y: 70 },
+    { type: 'exit', x: 600, y: 112 },
+    { type: 'water', x: 220, y: 130, w: 40, h: 24 },
   ],
   lemmings: 20,
   saveCount: 10,

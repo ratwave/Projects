@@ -31,6 +31,9 @@ function boot(): void {
     },
   });
   scene.start();
+
+  // Dev hook for automated interaction tests.
+  (window as unknown as { __scene: PlayScene }).__scene = scene;
 }
 
 boot();

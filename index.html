@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Lemmings — Web Edition</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+        font-family: "Courier New", monospace;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+      }
+      #stage {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      canvas {
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        touch-action: none;
+        display: block;
+      }
+      #loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #0f0;
+        font-size: 20px;
+        letter-spacing: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <canvas id="game"></canvas>
+    </div>
+    <div id="loading">LOADING…</div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

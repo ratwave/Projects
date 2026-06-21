@@ -18,27 +18,33 @@ export function updateBasher(lem: Lemming, ctx: SimContext): void {
   const dir = lem.dir;
   const top = lem.y - BASH_HEIGHT + 1;
 
-  // Steel / one-way check directly ahead.
-  const checkX = lem.x + dir;
+  // Look a few pixels ahead for a wall (the walker often stops 1-2px short).
+  const LOOKAHEAD = 4;
+  let wallDist = -1;
+  for (let s = 1; s <= LOOKAHEAD; s++) {
+    for (let y = top; y <= lem.y; y++) {
+      if (t.isSolid(lem.x + dir * s, y)) {
+        wallDist = s;
+        break;
+      }
+    }
+    if (wallDist >= 0) break;
+  }
+
+  // Nothing ahead to bash — broken through to open air.
+  if (wallDist < 0) {
+    lem.setState(LemState.Walker);
+    return;
+  }
+
+  // Steel / one-way at the wall column stops the basher.
+  const checkX = lem.x + dir * wallDist;
   for (let y = top; y <= lem.y; y++) {
     if (t.isSolid(checkX, y) && (t.isSteel(checkX, y) || onewayBlocks(t, checkX, y, dir))) {
       lem.dir = -lem.dir;
       lem.setState(LemState.Walker);
       return;
     }
-  }
-
-  // Is there any solid ahead to bash? If not, we've broken through.
-  let solidAhead = false;
-  for (let y = top; y <= lem.y; y++) {
-    if (t.isSolid(checkX, y)) {
-      solidAhead = true;
-      break;
-    }
-  }
-  if (!solidAhead) {
-    lem.setState(LemState.Walker);
-    return;
   }
 
   // Carve a stroke: a rectangle in front spanning the body height.

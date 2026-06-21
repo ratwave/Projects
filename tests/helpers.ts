@@ -82,3 +82,21 @@ export function stepAll(game: Game, ticks: number): void {
     }
   }
 }
+
+/**
+ * Run a full game (with spawning) until it ends, calling `strategy` each tick so
+ * a test can assign skills. Returns the number of ticks run.
+ */
+export function runWithStrategy(
+  game: Game,
+  strategy: (g: Game) => void,
+  maxTicks = 8000,
+): number {
+  let t = 0;
+  while (game.phase === 'running' && t < maxTicks) {
+    strategy(game);
+    game.step();
+    t++;
+  }
+  return t;
+}

@@ -49,10 +49,15 @@ export interface LevelObject {
   type: 'entrance' | 'exit' | 'water' | 'trap';
   x: number;
   y: number;
+  /** Trigger-area size (px). Defaults applied per type if omitted. */
+  w?: number;
+  h?: number;
   /** For traps: ticks the trap is harmless after a kill before re-arming. */
   delay?: number;
   /** Optional sprite/style hint. */
   variant?: string;
+  /** Runtime: trap re-arm countdown (managed by the sim). */
+  cooldown?: number;
 }
 
 export interface TerrainShape {

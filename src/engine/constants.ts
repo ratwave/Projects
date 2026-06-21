@@ -50,7 +50,7 @@ export const FALL_FIRST_STEP = 4;
 export const FALL_SPEED = 2;
 
 /** Floater descent speed in px per tick (slower than a normal faller). */
-export const FLOAT_SPEED = 2;
+export const FLOAT_SPEED = 1;
 /** Ticks the floater takes to deploy the brolly before slowing. */
 export const FLOAT_DEPLOY_TICKS = 8;
 

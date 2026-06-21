@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { makeLevel, makeGame, addLemming, stepLemming } from './helpers';
-import { LemState, Skill } from '../src/engine/types';
+import { LemState } from '../src/engine/types';
 import { WALK_SPEED, MAX_FALL } from '../src/engine/constants';
 
 const ground = (y: number, w = 200): { kind: 'rect'; x: number; y: number; w: number; h: number; style: string } => ({

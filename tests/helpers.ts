@@ -72,3 +72,13 @@ export function stepLemming(game: Game, lem: Lemming, ticks: number): void {
     dispatch(lem, ctx);
   }
 }
+
+/** Tick all lemmings in the game N times (no spawning). */
+export function stepAll(game: Game, ticks: number): void {
+  const ctx = game.context();
+  for (let i = 0; i < ticks; i++) {
+    for (const lem of game.lemmings) {
+      if (!lem.removed) dispatch(lem, ctx);
+    }
+  }
+}

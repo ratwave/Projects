@@ -15,6 +15,7 @@ import {
   DEFAULT_SEED,
 } from './constants';
 import { dispatch } from './sim';
+import { tickObjects } from './objects';
 
 export type GamePhase = 'running' | 'won' | 'lost';
 
@@ -113,6 +114,8 @@ export class Game {
     }
 
     if (this.nuking) this.handleNuke();
+
+    tickObjects(this.ctx());
 
     // Update lemmings (snapshot length; new spawns this tick already added).
     for (const lem of this.lemmings) {

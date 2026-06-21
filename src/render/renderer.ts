@@ -85,6 +85,18 @@ export class Renderer {
     // Status line.
     this.drawStatusLine(hud);
 
+    // Pause overlay.
+    if (hud.paused) {
+      ctx.fillStyle = 'rgba(0,0,0,0.45)';
+      ctx.fillRect(0, 0, VIEW_W, VIEW_H);
+      ctx.fillStyle = '#ffe000';
+      ctx.font = '14px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('PAUSED', VIEW_W / 2, VIEW_H / 2);
+      ctx.textAlign = 'left';
+    }
+
     // Panel + minimap.
     drawPanel(ctx, game, hud.selectedSkill, hud.paused);
     drawMinimap(ctx, game, cam);

@@ -50,6 +50,7 @@ export class App {
     this.current?.stop();
     this.current = scene;
     scene.start();
+    (window as unknown as { __scene: Scene }).__scene = scene;
   }
 
   async showMenu(): Promise<void> {
@@ -74,6 +75,9 @@ export class App {
       new PlayScene(this.canvas, this.ctx, data, this.audio, {
         onFinish: (won, game) => {
           void this.showResults(r, l, won, game);
+        },
+        onQuit: () => {
+          void this.showMenu();
         },
       }),
     );

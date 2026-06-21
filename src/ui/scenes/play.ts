@@ -22,6 +22,7 @@ const SKILL_KEYS: Record<string, Skill> = {
 
 export interface PlayCallbacks {
   onFinish: (won: boolean, game: Game) => void;
+  onQuit?: () => void;
 }
 
 /** The interactive in-level scene. */
@@ -266,6 +267,8 @@ export class PlayScene {
       this.camera.scrollBy(-16, 0);
     } else if (e.key === 'ArrowRight') {
       this.camera.scrollBy(16, 0);
+    } else if (e.key === 'Escape') {
+      this.cb.onQuit?.();
     }
   }
 }

@@ -69,6 +69,7 @@ export class PlayScene {
   }
 
   start(): void {
+    this.audio.setMusicTrack('level');
     this.loop.start();
   }
 

@@ -1,16 +1,24 @@
 import type { GameEvent } from '../engine/events';
+import { MusicPlayer } from './music';
 
 export type AudioMode = 'music' | 'fx' | 'off';
 
 /**
- * WebAudio engine producing original synthesized sound effects (and, later,
- * music). No sampled/copyrighted audio — everything is generated from
+ * WebAudio engine producing original synthesized sound effects and original
+ * chiptune music. No sampled/copyrighted audio — everything is generated from
  * oscillators and noise at runtime.
+ *
+ * Modes mirror the original game: 'music' = music + effects, 'fx' = effects
+ * only, 'off' = silent.
  */
 export class AudioEngine {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
-  mode: AudioMode = 'fx';
+  private musicGain: GainNode | null = null;
+  private music: MusicPlayer | null = null;
+  /** The track scenes want playing (played only while mode === 'music'). */
+  private desiredTrack: string | null = 'menu';
+  mode: AudioMode = 'music';
   private lastPlay: Record<string, number> = {};
 
   private ensure(): AudioContext | null {
@@ -22,28 +30,60 @@ export class AudioEngine {
       this.master = this.ctx.createGain();
       this.master.gain.value = 0.35;
       this.master.connect(this.ctx.destination);
+      this.musicGain = this.ctx.createGain();
+      this.musicGain.gain.value = 0.5;
+      this.musicGain.connect(this.master);
+      this.music = new MusicPlayer(this.ctx, this.musicGain);
     }
     return this.ctx;
   }
 
-  /** Resume the context after a user gesture (autoplay policy). */
+  /** Resume the context after a user gesture (autoplay policy) and (re)start music. */
   resume(): void {
     const c = this.ensure();
     if (c && c.state === 'suspended') void c.resume();
+    this.updateMusic();
+  }
+
+  /** Choose which track should play; takes effect immediately in 'music' mode. */
+  setMusicTrack(name: string): void {
+    this.desiredTrack = name;
+    this.updateMusic();
+  }
+
+  private updateMusic(): void {
+    if (!this.music) return;
+    if (this.mode === 'music' && this.desiredTrack && this.ctx?.state === 'running') {
+      this.music.start(this.desiredTrack);
+    } else {
+      this.music.stop();
+    }
   }
 
   setMode(mode: AudioMode): void {
     this.mode = mode;
-    if (mode === 'off' && this.ctx) {
-      void this.ctx.suspend();
+    if (mode === 'off') {
+      this.music?.stop();
+      // Keep the context alive for a quick unmute; just silence output.
     } else {
       this.resume();
     }
+    this.updateMusic();
   }
 
   cycleMode(): AudioMode {
     this.setMode(this.mode === 'music' ? 'fx' : this.mode === 'fx' ? 'off' : 'music');
     return this.mode;
+  }
+
+  /** Diagnostic snapshot (used by automated tests). */
+  status(): { mode: AudioMode; ctx: string; musicPlaying: boolean; track: string | null } {
+    return {
+      mode: this.mode,
+      ctx: this.ctx?.state ?? 'none',
+      musicPlaying: this.music?.playing ?? false,
+      track: this.music?.track ?? null,
+    };
   }
 
   /** Map a game event to a short synthesized sound. */

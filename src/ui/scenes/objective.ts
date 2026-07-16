@@ -29,6 +29,7 @@ export class ObjectiveScene implements Scene {
   ) {}
 
   start(): void {
+    this.app.audio.setMusicTrack('menu');
     this.renderPreview();
     this.buttons = [
       { x: SCREEN_W / 2 - 70, y: SCREEN_H - 24, w: 64, h: 16, label: 'BACK', onClick: () => this.app.showMenu() },

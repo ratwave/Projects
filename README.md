@@ -68,8 +68,9 @@ npm run lint       # lint the TypeScript sources
   win/lose evaluation, and all tunable constants in `constants.ts`.
 - **`src/render`** — Canvas 2D rendering: procedurally-drawn lemming and object
   sprites, terrain blitting, the control panel, the minimap, and the HUD.
-- **`src/audio`** — a WebAudio engine that synthesizes all sound effects at
-  runtime (no audio files).
+- **`src/audio`** — a WebAudio engine that synthesizes all sound effects **and
+  an original looping chiptune soundtrack** (separate menu and in-level themes)
+  at runtime (no audio files).
 - **`src/ui`** — the scene manager and scenes (menu → objective → play →
   results), plus campaign progression and password handling.
 - **`src/levels`** — original level data grouped into difficulty ratings.

@@ -17,6 +17,7 @@ export class ResultsScene implements Scene {
   ) {}
 
   start(): void {
+    this.app.audio.setMusicTrack('menu');
     if (this.result.won) {
       markComplete(this.r, this.l);
       this.nextPos = nextLevel(this.r, this.l);

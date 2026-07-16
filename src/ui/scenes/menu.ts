@@ -25,6 +25,7 @@ export class MenuScene implements Scene {
   }
 
   start(): void {
+    this.app.audio.setMusicTrack('menu');
     this.buildButtons();
     const onClick = (e: MouseEvent) => {
       this.app.audio.resume();
